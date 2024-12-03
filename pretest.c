@@ -77,20 +77,47 @@ void print_array(int* arr, int len){
     }
 }
 
+void write_struct(Student* student){
 
+    FILE *file = fopen("test.dat", "wb");
+    if (file == NULL){
+        printf("Something went wrong");
+        exit(1);
+    }
+
+    fwrite(student, sizeof(Student), 1, file);
+    fclose(file);
+}
+void read_struct(char* name){
+    Student s1;
+    FILE *file = fopen(name, "rb");
+
+    if (file == NULL){
+        printf("Something went wrong");
+        exit(1);
+    }
+    fread(&s1, sizeof(s1), 1, file);
+    printf("Name of student: %s \n", s1.name);
+    printf("Age of student: %d \n", s1.age);
+    fclose(file);
+}
 int main(int argc, char *argv[]) {
-    FILE *fp = fopen("data.txt", "r");
+    FILE *fp = fopen("test.dat", "wb");
+    Student s1 = {"Gio", 2};
+    Student student_buffer;
     int num = 1;
     int* numptr = &num;
     char buffer[50];
     int int_buffer[10];
-    for (int i = 0; i < 10; i++){
-        printf("%p\n", int_buffer + i);
-    }
-
-    while (fgets(buffer, sizeof(buffer), fp)) {
-        printf("Read: %s\n", buffer);
-    }
+    write_struct(&s1);
+    read_struct("test.dat");
+    /*for (int i = 0; i < 10; i++){*/
+    /*    printf("%p\n", int_buffer + i);*/
+    /*}*/
+    /**/
+    /*while (fgets(buffer, sizeof(buffer), fp)) {*/
+    /*    printf("Read: %s\n", buffer);*/
+    /*}*/
     fclose(fp);
     /*create_student(); */
     /*printf("%d\n", factorial(5));*/
